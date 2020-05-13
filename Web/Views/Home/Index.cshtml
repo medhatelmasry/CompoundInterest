@@ -1,0 +1,81 @@
+﻿@model Web.Models.CompoundInterest
+
+@inject Microsoft.Extensions.Configuration.IConfiguration config
+
+@{
+    ViewBag.Title = "Compound Interest Calculator";
+    double result = Convert.ToDouble(@TempData["balance"]);
+    string strResult = string.Format("{0:C}", result);
+
+
+    string region = "You must set the REGION environment variable.";
+    if (!string.IsNullOrEmpty(config["REGION"]))
+    {
+        region = config["REGION"];
+    }
+
+    string env = "Production";
+    if (!string.IsNullOrEmpty(config["ASPNET_ENVIRONMENT"]))
+    {
+        env = config["ASPNET_ENVIRONMENT"];
+    }
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <br />
+        <div class="row h4 text-info">
+            <div class="col-md-3">@ViewData["Title"]</div>
+            <div class="col-md-3">@env</div>
+            <div class="col-md-3">@region</div>
+            <div class="col-md-3">@DateTime.Now.ToString("MMMM dd, yyyy")</div>
+        </div>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Principal, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Principal, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Principal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimesCompounded, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TimesCompounded, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TimesCompounded, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestRate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.InterestRate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.InterestRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Years, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Years, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" id="btnCalculate" class="btn btn-default btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData["balance"] != null)
+{
+    <p>Balance = <span id="result">@strResult</span></p>
+}
