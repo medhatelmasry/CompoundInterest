@@ -88,7 +88,7 @@ namespace Web.Models
             double exponent = TimesCompounded * Years;
 
             // P(1 + r/n)^nt
-            return Principal * Math.Pow(body, exponent) * 1000;
+            return Principal * Math.Pow(body, exponent);
         }
 
     }
