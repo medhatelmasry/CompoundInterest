@@ -33,7 +33,7 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         
-    #  Run dotnet restore & build
+    # Run dotnet restore & build
     - name: Install dependencies
       run: dotnet restore
     - name: Build
